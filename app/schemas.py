@@ -11,7 +11,7 @@ class ReviewCreate(ReviewBase):
 class ReviewOut(ReviewBase):
     id: int
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class BookBase(BaseModel):
     title: str
@@ -25,4 +25,4 @@ class BookOut(BookBase):
     reviews: List[ReviewOut] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
