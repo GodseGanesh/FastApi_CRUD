@@ -4,6 +4,7 @@ from app.db import SessionLocal
 from app import crud, schemas, cache
 from typing import List
 import json
+import asyncio
 
 router = APIRouter()
 
@@ -33,7 +34,9 @@ async def read_books(db: Session = Depends(get_db)):
 
 @router.post("/books", response_model=schemas.BookOut)
 def add_book(book: schemas.BookCreate, db: Session = Depends(get_db)):
-    return crud.create_book(db, book)
+    created_book = crud.create_book(db, book)
+    asyncio.create_task(cache.clear_cached_books())  # fire and forget
+    return created_book
 
 @router.get("/books/{id}/reviews", response_model=List[schemas.ReviewOut])
 def read_reviews(id: int, db: Session = Depends(get_db)):

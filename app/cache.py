@@ -11,3 +11,6 @@ async def get_books():
 async def set_cached_books(books: list):
     import json
     await r.set("books", json.dumps(books))
+
+async def clear_cached_books():
+    await r.delete("books")
